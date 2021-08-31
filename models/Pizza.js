@@ -3,6 +3,9 @@
 //only import schema constructor and model function
 const { Schema, model } = require('mongoose');
 
+//import function to format date
+const dateFormat = require('../utils/dateFormat')
+
 
 //schema for model
 const PizzaSchema = new Schema(
@@ -15,7 +18,8 @@ const PizzaSchema = new Schema(
         },
         createdAt: {
             type: Date,
-            default: Date.now
+            default: Date.now,
+            get: (createdAtVal) => dateFormat(createdAtVal) //dateFormat is the function connected with a getter
         },
         size: {
             type: String,
@@ -31,10 +35,12 @@ const PizzaSchema = new Schema(
         ]
     },
     {
-        //inform schema it can use virtuals(true)
+        //inform model it can use virtuals(true)
+        //inform model it can use getters(true)
         // id to false as this is a virtual and we don't need it
         toJSON: {
             virtuals: true,
+            getters: true
         },
         id: false
     }
